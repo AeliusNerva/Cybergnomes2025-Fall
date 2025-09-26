@@ -150,7 +150,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    //public RobotContainer() {
+    public RobotContainer() {
     //    configureAutoBuilder();
     // //configurePathPlannerCommands();
     // boolean isCompetition = true;
@@ -159,10 +159,10 @@ public class RobotContainer {
     // setUpSwerveController();
     // configureLimelight(Constants.Limelight.Right.NAME);
     // configureLimelight(Constants.Limelight.Left.NAME);
-    // configureBindings();
-    // preparePneumatics();
+    configureBindings();
+    //preparePneumatics();
     // configureAutoChooser();
-    //}
+    }
     public static final PneumaticsHandler h_pneumatics = new PneumaticsHandler();
 
     private void preparePneumatics() {
