@@ -6,14 +6,13 @@ package frc.robot;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.SwerveCommand;
 import frc.robot.commands.Algae.IntakeCommand;
 import frc.robot.commands.Algae.IntakeWheelsCommand;
 import frc.robot.commands.Claw.PivotCommand;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.auto.NamedCommands;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.commands.PathPlannerAuto;
+// import com.pathplanner.lib.auto.NamedCommands;
 
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -31,7 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
-import frc.robot.commands.*;b
+import frc.robot.commands.*;
 import frc.robot.commands.Elevator.ElevatorCommand;
 import frc.robot.commands.Elevator.ReverseElevatorCommand;
 import frc.robot.commands.CoralIntakeCommand;
@@ -151,19 +150,19 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public RobotContainer() {
-        configureAutoBuilder();
-     //configurePathPlannerCommands();
-     boolean isCompetition = true;
-
-     /* Setup */
-     setUpSwerveController();
-     configureLimelight(Constants.Limelight.Right.NAME);
-     configureLimelight(Constants.Limelight.Left.NAME);
-     configureBindings();
-     preparePneumatics();
-     configureAutoChooser();
-    }
+    //public RobotContainer() {
+    //    configureAutoBuilder();
+    // //configurePathPlannerCommands();
+    // boolean isCompetition = true;
+//
+    // /* Setup */
+    // setUpSwerveController();
+    // configureLimelight(Constants.Limelight.Right.NAME);
+    // configureLimelight(Constants.Limelight.Left.NAME);
+    // configureBindings();
+    // preparePneumatics();
+    // configureAutoChooser();
+    //}
     public static final PneumaticsHandler h_pneumatics = new PneumaticsHandler();
 
     private void preparePneumatics() {
