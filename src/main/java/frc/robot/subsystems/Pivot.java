@@ -28,7 +28,7 @@ public class Pivot extends SubsystemBase {
   private TalonFXConfiguration fxPivotConfig;
   private final MotionMagicVoltage m_mmReq = new MotionMagicVoltage(0);
 
-  private final Pivot s_Pivot = RobotContainer.s_Pivot;
+  //private final Pivot s_Pivot = RobotContainer.s_Pivot;
   private static Pivot instance = null;
 
   public double pivotTargetPosition = 0;
@@ -91,14 +91,14 @@ public void setTargetPosition( double targetPosition) {
  }
 
  public boolean isAtTargetPosition() {
-  if ( Math.abs(pivotTargetPosition - s_Pivot.getPosition()) < Constants.Claw.PIVOT_POS)
+  if (Math.abs(pivotTargetPosition - this.getPosition()) < Constants.Claw.PIVOT_POS)
     return true;
   else
     return false;
  }
 
  public void stopMotor() {
-  s_Pivot.stopMotor();
+  fxPivotMotor.set(0);
  }
  
  

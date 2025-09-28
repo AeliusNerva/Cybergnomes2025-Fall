@@ -35,7 +35,13 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    
+
+    RobotContainer.s_Elevator.zeroElevator();
+   }
+
+  
 
   @Override
   public void disabledPeriodic() {}
@@ -46,7 +52,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    RobotContainer.s_Elevator.zeroElevator();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -60,6 +66,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    RobotContainer.s_Elevator.zeroElevator();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

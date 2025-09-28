@@ -158,6 +158,14 @@ public class Elevator extends SubsystemBase {
       fxLeftElevatorMotor.set(0);
       fxRightElevatorMotor.set(0);
     }
+    
+    public void zeroElevator() {
+      fxLeftElevatorMotor.setPosition(0);
+      fxRightElevatorMotor.setPosition(0);
+      elevatorTargetPosition = 0;
+      elevatorPrevPosition = 0;
+  }
+  
     /*public void setHeight(double MOVE_POSITION) {
       fxLeftElevatorMotor.setControl(m_mmReq.withPosition(MOVE_POSITION).withSlot(0));
       fxRightElevatorMotor.setControl(m_mmReq.withPosition(-MOVE_POSITION).withSlot(0));
@@ -230,5 +238,5 @@ public class Elevator extends SubsystemBase {
     mPeriodicIO.state = ElevatorState.L4;
   }*/
 
-//}
+ 
 
