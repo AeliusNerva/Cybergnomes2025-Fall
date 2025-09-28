@@ -93,10 +93,10 @@ public final class Constants {
 
         //public static final double L2Height = 9.0;
         public static enum ElevatorSetPosition{
-                LEVEL_1_HEIGHT (-30),
-                LEVEL_2_HEIGHT (2),
-                LEVEL_3_HEIGHT (3),
-                LEVEL_4_HEIGHT (4),
+                LEVEL_1_HEIGHT (25),
+                LEVEL_2_HEIGHT (50),
+                LEVEL_3_HEIGHT (75),
+                LEVEL_4_HEIGHT (100),
                 ZERO_HEIGHT (0);
 
                 public final double position;

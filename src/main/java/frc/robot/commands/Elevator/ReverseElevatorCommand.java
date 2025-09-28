@@ -38,11 +38,14 @@ public class ReverseElevatorCommand extends Command {
   public void initialize() {}
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-      s_Elevator.setSpeed(speed);
-      
-     // s_Elevator.setHeight(Constants.Elevator.MOVE_POSITION);
-  }
+ public void execute() {
+    if (s_Elevator.getPosition() > 0) {
+        s_Elevator.setSpeed(speed);
+    } else {
+        s_Elevator.stopMotor();
+    }
+}
+
 
   // Called once the command ends or is interrupted.
   @Override

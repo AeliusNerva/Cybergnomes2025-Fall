@@ -49,7 +49,6 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
 public class RobotContainer {
@@ -207,11 +206,13 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
         /* Elevator Buttons */
           //Driver
+       // Elevator setpoints
        b_Level1.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_1_HEIGHT));
        b_Level2.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_2_HEIGHT));
        b_Level3.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_3_HEIGHT));
        b_Level4.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_4_HEIGHT));
        b_Zero.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.ZERO_HEIGHT));
+
           //Co driver
        b_Level1_coDriver.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_1_HEIGHT));
        b_Level2_coDriver.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_2_HEIGHT));

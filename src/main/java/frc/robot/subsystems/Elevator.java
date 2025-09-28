@@ -124,10 +124,19 @@ public class Elevator extends SubsystemBase {
         }
 
   
-    public void setSpeed(double speedPercent) {
-      fxLeftElevatorMotor.set(speedPercent);
-      fxRightElevatorMotor.set(-speedPercent);
-    }
+        public void setSpeed(double speedPercent) {
+          double currentPos = getPosition();
+      
+          // Prevent moving below zero
+          if (currentPos <= 0 && speedPercent < 0) {
+              fxLeftElevatorMotor.set(0);
+              fxRightElevatorMotor.set(0);
+          } else {
+              fxLeftElevatorMotor.set(speedPercent);
+              fxRightElevatorMotor.set(-speedPercent);
+          }
+      }
+      
 
       public void setPosition(double position) {
       elevatorTargetPosition = position;  // remember where we want to go
