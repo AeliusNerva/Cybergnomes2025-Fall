@@ -54,10 +54,11 @@ public class ElevatorCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    elevatorInstance.setPosition(setPosition.position);
-    //s_Elevator.setHeight(Constants.Elevator.ZERO_HEIGHT);
-  }
+public void initialize() {
+  m_timer.restart();  // start timer
+  elevatorInstance.setPosition(setPosition.position);
+}
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

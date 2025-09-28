@@ -129,10 +129,13 @@ public class Elevator extends SubsystemBase {
       fxRightElevatorMotor.set(-speedPercent);
     }
 
-     public void setPosition(double position) {
-      fxLeftElevatorMotor.set(elevatorController.calculate(getPosition(), position));
-      fxRightElevatorMotor.set(-elevatorController.calculate(getPosition(), position));
-     }
+      public void setPosition(double position) {
+      elevatorTargetPosition = position;  // remember where we want to go
+      double output = elevatorController.calculate(getPosition(), position);
+      fxLeftElevatorMotor.set(output);
+      fxRightElevatorMotor.set(-output);
+    }
+    
 
      public void setTargetPosition( double targetPosition) {
       elevatorTargetPosition = targetPosition;
@@ -143,19 +146,18 @@ public class Elevator extends SubsystemBase {
      }
 
      public boolean isAtTargetPosition() {
-      if ( Math.abs(elevatorTargetPosition - s_Elevator.getPosition()) < Constants.Elevator.ELEVATOR_POS)
-        return true;
-      else
-        return false;
-     }
+      return Math.abs(elevatorTargetPosition - getPosition()) < Constants.Elevator.ELEVATOR_POS;
+    }
+    
 
     /*  public boolean isAtTargetPosition() {
       if( Math.abs(elevatorTargetPosition - s_Elevator.getPosition()) < Constants.Elevator.ELEVATOR_POS);
      }*/
 
      public void stopMotor() {
-      s_Elevator.stopMotor();
-     }
+      fxLeftElevatorMotor.set(0);
+      fxRightElevatorMotor.set(0);
+    }
     /*public void setHeight(double MOVE_POSITION) {
       fxLeftElevatorMotor.setControl(m_mmReq.withPosition(MOVE_POSITION).withSlot(0));
       fxRightElevatorMotor.setControl(m_mmReq.withPosition(-MOVE_POSITION).withSlot(0));
