@@ -93,10 +93,10 @@ public final class Constants {
 
         //public static final double L2Height = 9.0;
         public static enum ElevatorSetPosition{
-                LEVEL_1_HEIGHT (25),
-                LEVEL_2_HEIGHT (50),
-                LEVEL_3_HEIGHT (75),
-                LEVEL_4_HEIGHT (100),
+                LEVEL_1_HEIGHT (0.5),
+                LEVEL_2_HEIGHT (0.5),
+                LEVEL_3_HEIGHT (1.5),
+                LEVEL_4_HEIGHT (1.5),
                 ZERO_HEIGHT (0);
 
                 public final double position;
@@ -111,7 +111,7 @@ public final class Constants {
                 public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final int MOTOR_ID = 39; //Elevator.L
                 public static final double ACCELERATION = 1;
-                public static final double MAX_SPEED = 1;
+                public static final double MAX_SPEED = 0.5;
                 public static final double KP = 0.2;
                 public static final double KI = 0;
                 public static final double KD = 0;
@@ -122,7 +122,7 @@ public final class Constants {
                 public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final int MOTOR_ID = 15; //Elevator.R
                 public static final double ACCELERATION = 1;
-                public static final double MAX_SPEED = 1;
+                public static final double MAX_SPEED = 0.5;
                 public static final double KP = 0.2;
                 public static final double KI = 0;
                 public static final double KD = 0;

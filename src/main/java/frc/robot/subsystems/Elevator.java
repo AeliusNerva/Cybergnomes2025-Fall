@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -44,6 +45,8 @@ public class Elevator extends SubsystemBase {
   private TalonFXConfiguration fxRightElevatorMotorConfig;
 
   private final PIDController elevatorController;
+ // Smooth acceleration limiter
+  private final SlewRateLimiter accelLimiter = new SlewRateLimiter(Constants.Elevator.LeftElevatorMotor.ACCELERATION);
 
   //private CANcoder ElevatorCanCoder;
 
@@ -139,11 +142,20 @@ public class Elevator extends SubsystemBase {
       
 
       public void setPosition(double position) {
-      elevatorTargetPosition = position;  // remember where we want to go
-      double output = elevatorController.calculate(getPosition(), position);
-      fxLeftElevatorMotor.set(output);
-      fxRightElevatorMotor.set(-output);
+        elevatorTargetPosition = position;  // remember where we want to go
+        double output = elevatorController.calculate(getPosition(), position);
+    
+        // Clamp to max speed
+        output = Math.max(-Constants.Elevator.LeftElevatorMotor.MAX_SPEED,
+                 Math.min(Constants.Elevator.LeftElevatorMotor.MAX_SPEED, output));
+    
+        // Apply acceleration smoothing
+        output = accelLimiter.calculate(output);
+    
+        fxLeftElevatorMotor.set(-output);
+        fxRightElevatorMotor.set(output);
     }
+    
     
 
      public void setTargetPosition( double targetPosition) {
