@@ -121,8 +121,8 @@ public class Elevator extends SubsystemBase {
      @Override
      public void periodic() {
       SmartDashboard.putNumber("Elevator position", fxLeftElevatorMotor.getPosition().getValueAsDouble());
-      //SmartDashboard.putNumber("elevator motor ", fxLeftElevatorMotor.getPosition().getValue());
-
+      SmartDashboard.putNumber("Elevator goal position", elevatorTargetPosition); // Added goal position
+      SmartDashboard.putNumber("Elevator current position", getPosition()); // Added current position
       
         }
 
@@ -152,8 +152,8 @@ public class Elevator extends SubsystemBase {
         // Apply acceleration smoothing
         output = accelLimiter.calculate(output);
     
-        fxLeftElevatorMotor.set(-output);
-        fxRightElevatorMotor.set(output);
+        fxLeftElevatorMotor.set(output);
+        fxRightElevatorMotor.set(-output);
     }
     
     
@@ -259,5 +259,5 @@ public class Elevator extends SubsystemBase {
     mPeriodicIO.state = ElevatorState.L4;
   }*/
 
- 
+
 
