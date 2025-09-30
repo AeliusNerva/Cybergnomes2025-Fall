@@ -94,9 +94,9 @@ public final class Constants {
         //public static final double L2Height = 9.0;
         public static enum ElevatorSetPosition{
                 LEVEL_1_HEIGHT (-10),
-                LEVEL_2_HEIGHT (-10),
-                LEVEL_3_HEIGHT (-10),
-                LEVEL_4_HEIGHT (-80),
+                LEVEL_2_HEIGHT (-20),
+                LEVEL_3_HEIGHT (-40),
+                LEVEL_4_HEIGHT (-60),
                 ZERO_HEIGHT (0);
 
                 public final double position;
@@ -110,8 +110,8 @@ public final class Constants {
                 public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final int MOTOR_ID = 39; //Elevator.L
-                public static final double ACCELERATION = 1;
-                public static final double MAX_SPEED = 0.5;
+                public static final double ACCELERATION = 0.5;
+                public static final double MAX_SPEED = 0.25;
                 public static final double KP = 0.2;
                 public static final double KI = 0;
                 public static final double KD = 0;
@@ -121,8 +121,8 @@ public final class Constants {
                 public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final int MOTOR_ID = 15; //Elevator.R
-                public static final double ACCELERATION = 1;
-                public static final double MAX_SPEED = 0.5;
+                public static final double ACCELERATION = 0.5;
+                public static final double MAX_SPEED = 0.25;
                 public static final double KP = 0.2;
                 public static final double KI = 0;
                 public static final double KD = 0;
@@ -154,7 +154,7 @@ public final class Constants {
         public static double PIVOT_POS = 0.8;
 
         public static enum PivotSetPosition{
-                UP(7), //CHANGE THESE ONCE TESTED!!!!!!!!!!!!
+                UP(-7), //CHANGE THESE ONCE TESTED!!!!!!!!!!!!
                 OUT(1);
 
 
@@ -169,12 +169,12 @@ public final class Constants {
                 public static final int MOTOR_ID = 7; //Pivot motor
                 public static final double ACCELERATION = 6;
                 public static final double MAX_SPEED = 6;
-                public static final double KP = 0.1;
+                public static final double KP = 1.1;
                 public static final double KI = 0;
                 public static final double KD = 0;
 
-                public static final double CANCODER_MIN = 0.078; //FILL IN!!!
-                public static final double CANCODER_MAX = 0.2; //FILL IN!!!
+                public static final double CANCODER_MIN = -6; //FILL IN!!!
+                public static final double CANCODER_MAX = 0; //FILL IN!!!
 
                 //Threshold to determine if the pivot has fully rotated back (used for math check in pivot command)
                 public static final double PIVOT_ANGLE_THRESHOLD = 1.0;

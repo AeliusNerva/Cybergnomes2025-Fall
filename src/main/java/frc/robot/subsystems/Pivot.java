@@ -56,7 +56,7 @@ public class Pivot extends SubsystemBase {
     fxPivotMotor.getConfigurator().apply(fxPivotConfig);
     fxPivotMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    pivotController = new PIDController(0.01, 0, 0 );
+    pivotController = new PIDController(1.1, 0, 0 );
 
     MotionMagicConfigs angleMotionMagic = fxPivotConfig.MotionMagic;
     angleMotionMagic.MotionMagicAcceleration = Constants.Claw.PivotMotor.ACCELERATION;
