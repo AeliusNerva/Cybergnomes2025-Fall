@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,6 +36,7 @@ public class Pivot extends SubsystemBase {
   public double pivotPrevPosition = 0;
 
   private final PIDController pivotController;
+  private final SlewRateLimiter accelLimiter;
 
   public static Pivot getInstance() {
     if (instance == null) {
@@ -56,7 +58,10 @@ public class Pivot extends SubsystemBase {
     fxPivotMotor.getConfigurator().apply(fxPivotConfig);
     fxPivotMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    pivotController = new PIDController(1.1, 0, 0 );
+    pivotController = new PIDController(0.511, 0, 0 );
+    pivotController.setTolerance(Constants.Claw.PIVOT_POS);
+
+    accelLimiter = new SlewRateLimiter(Constants.Claw.PivotMotor.ACCELERATION);
 
     MotionMagicConfigs angleMotionMagic = fxPivotConfig.MotionMagic;
     angleMotionMagic.MotionMagicAcceleration = Constants.Claw.PivotMotor.ACCELERATION;
@@ -79,7 +84,16 @@ public class Pivot extends SubsystemBase {
 }
 
   public void setPosition(double position) {
-  fxPivotMotor.set(pivotController.calculate(getPosition(), position));
+    pivotTargetPosition = position;
+    double output = pivotController.calculate(getPosition(), position);
+
+    // Clamp output to max speed
+    output = Math.max(-Constants.Claw.PivotMotor.MAX_SPEED, Math.min(Constants.Claw.PivotMotor.MAX_SPEED, output));
+
+    // Apply acceleration smoothing
+    output = accelLimiter.calculate(output);
+
+    fxPivotMotor.set(output);
 }
 
 public void setTargetPosition( double targetPosition) {
@@ -91,10 +105,7 @@ public void setTargetPosition( double targetPosition) {
  }
 
  public boolean isAtTargetPosition() {
-  if (Math.abs(pivotTargetPosition - this.getPosition()) < Constants.Claw.PIVOT_POS)
-    return true;
-  else
-    return false;
+  return pivotController.atSetpoint();
  }
 
  public void stopMotor() {
@@ -104,7 +115,8 @@ public void setTargetPosition( double targetPosition) {
  
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Claw pivot position", fxPivotMotor.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("Pivot Position", getPosition());
+    SmartDashboard.putNumber("Pivot Target", pivotTargetPosition);
     // This method will be called once per scheduler run
     //   SmartDashboard.putNumber("Claw Pivot Angle", fxPivotMotor.getRotorPosition().getValue());
   }

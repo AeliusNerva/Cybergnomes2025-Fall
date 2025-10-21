@@ -167,14 +167,14 @@ public final class Constants {
 
         public static final class PivotMotor{
                 public static final int MOTOR_ID = 7; //Pivot motor
-                public static final double ACCELERATION = 6;
-                public static final double MAX_SPEED = 6;
-                public static final double KP = 1.1;
+                public static final double ACCELERATION = 0.6;
+                public static final double MAX_SPEED = 0.6;
+                public static final double KP = 0.5;
                 public static final double KI = 0;
                 public static final double KD = 0;
 
-                public static final double CANCODER_MIN = -6; //FILL IN!!!
-                public static final double CANCODER_MAX = 0; //FILL IN!!!
+                public static final double CANCODER_MIN = -5; //FILL IN!!!
+                public static final double CANCODER_MAX = 5; //FILL IN!!!
 
                 //Threshold to determine if the pivot has fully rotated back (used for math check in pivot command)
                 public static final double PIVOT_ANGLE_THRESHOLD = 1.0;
