@@ -110,8 +110,8 @@ public final class Constants {
                 public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final int MOTOR_ID = 39; //Elevator.L
-                public static final double ACCELERATION = 0.5;
-                public static final double MAX_SPEED = 0.25;
+                public static final double ACCELERATION = 0.25;  // DONT TOUCH
+                public static final double MAX_SPEED = 0.4;  // Ajust these values for speed 
                 public static final double KP = 0.2;
                 public static final double KI = 0;
                 public static final double KD = 0;
@@ -121,8 +121,8 @@ public final class Constants {
                 public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
                 public static final int MOTOR_ID = 15; //Elevator.R
-                public static final double ACCELERATION = 0.5;
-                public static final double MAX_SPEED = 0.25;
+                public static final double ACCELERATION = 0.25; // DONT TOUCH
+                public static final double MAX_SPEED = 0.4;// Ajust these values for speed
                 public static final double KP = 0.2;
                 public static final double KI = 0;
                 public static final double KD = 0;
@@ -154,8 +154,8 @@ public final class Constants {
         public static double PIVOT_POS = 0.8;
 
         public static enum PivotSetPosition{
-                UP(-7), //CHANGE THESE ONCE TESTED!!!!!!!!!!!!
-                OUT(1);
+                UP(-6), //CHANGE THESE ONCE TESTED!!!!!!!!!!!!
+                OUT(-1);
 
 
                 public final double pivotPosition;
@@ -167,8 +167,8 @@ public final class Constants {
 
         public static final class PivotMotor{
                 public static final int MOTOR_ID = 7; //Pivot motor
-                public static final double ACCELERATION = 0.6;
-                public static final double MAX_SPEED = 0.6;
+                public static final double ACCELERATION = 0.1;
+                public static final double MAX_SPEED = 0.3;
                 public static final double KP = 0.5;
                 public static final double KI = 0;
                 public static final double KD = 0;

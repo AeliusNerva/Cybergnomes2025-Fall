@@ -95,19 +95,19 @@ public class RobotContainer {
     private final JoystickButton b_Level2 = new JoystickButton(driver,  PS4Controller.Button.kSquare.value);
     private final JoystickButton b_Level3 = new JoystickButton(driver,  PS4Controller.Button.kCircle.value);
     private final JoystickButton b_Level4 = new JoystickButton(driver,  PS4Controller.Button.kTriangle.value);
-    private final JoystickButton b_Zero = new JoystickButton(driver,  PS4Controller.Button.kShare.value);
+    private final JoystickButton b_Zero = new JoystickButton(driver,  PS4Controller.Button.kR2.value);
         //CO DRIVER
     private final JoystickButton b_Level1_coDriver = new JoystickButton(coDriver,  PS4Controller.Button.kCross.value);
     private final JoystickButton b_Level2_coDriver = new JoystickButton(coDriver,  PS4Controller.Button.kSquare.value);
     private final JoystickButton b_Level3_coDriver = new JoystickButton(coDriver,  PS4Controller.Button.kCircle.value);
     private final JoystickButton b_Level4_coDriver = new JoystickButton(coDriver,  PS4Controller.Button.kTriangle.value);
-    private final JoystickButton b_Zero_coDriver = new JoystickButton(coDriver,  PS4Controller.Button.kShare.value);
+    private final JoystickButton b_Zero_coDriver = new JoystickButton(coDriver,  PS4Controller.Button.kR2.value);
 
     //*** CORAL PUSHER/FUNNEL INTAKE ***//
         //DRIVER
-    private final JoystickButton b_coralPusherBlock = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+    private final JoystickButton b_coralPusherBlock = new JoystickButton(driver, PS4Controller.Button.kShare.value);
         //CODRIVER
-    private final JoystickButton b_coralPusherBlock_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR2.value);
+    private final JoystickButton b_coralPusherBlock_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kShare.value);
 
     //*** CLAW ***//
         //DRIVER
@@ -123,14 +123,14 @@ public class RobotContainer {
 
     //*** ALGAE INTAKE ***/
         //DRIVER
-   /*  private final JoystickButton b_AlgaeIntake1Block = new JoystickButton(driver, PS4Controller.Button.kL1.value);
-    private final JoystickButton b_AlgaeIntake2Block = new JoystickButton(driver, PS4Controller.Button.kL1.value);
-    private final JoystickButton b_AlgaeIntakeWheels = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+    private final JoystickButton b_AlgaeIntake1Block = new JoystickButton(driver, PS4Controller.Button.kR1.value);
+    private final JoystickButton b_AlgaeIntake2Block = new JoystickButton(driver, PS4Controller.Button.kR1.value);
+    private final JoystickButton b_AlgaeIntakeWheels = new JoystickButton(driver, PS4Controller.Button.kR1.value);
         //CO DRIVER
-    private final JoystickButton b_AlgaeIntake1Block_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kL1.value);
-    private final JoystickButton b_AlgaeIntake2Block_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kL1.value);
-    private final JoystickButton b_AlgaeIntakeWheels_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kL1.value);
-   */
+    private final JoystickButton b_AlgaeIntake1Block_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR1.value);
+    private final JoystickButton b_AlgaeIntake2Block_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR1.value);
+    private final JoystickButton b_AlgaeIntakeWheels_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR1.value);
+   
 
 
  /* Sendable Chooser and Autonomus Commands */
@@ -240,14 +240,14 @@ public class RobotContainer {
        b_coralPusherBlock_coDriver.onFalse(new InstantCommand(() -> h_pneumatics.setCoralPusherSolenoid(false)));
 
        /*Algae intake */
-      /*  b_AlgaeIntakeWheels.whileTrue(new IntakeWheelsCommand(0.5));
+        b_AlgaeIntakeWheels.whileTrue(new IntakeWheelsCommand(0.5));
 
        b_AlgaeIntake1Block.onTrue(new InstantCommand(() -> h_pneumatics.setAlgaeIntake1Solenoid(true)));
        b_AlgaeIntake2Block.onTrue(new InstantCommand(() -> h_pneumatics.setAlgaeIntake2Solenoid(true)));
 
        b_AlgaeIntake1Block.onFalse(new InstantCommand(() -> h_pneumatics.setAlgaeIntake1Solenoid(false)));
        b_AlgaeIntake2Block.onFalse(new InstantCommand(() -> h_pneumatics.setAlgaeIntake2Solenoid(false)));
-      */
+      
        /* claw grab and release */
           //Driver
        b_ClawOpenBlock.onTrue(new InstantCommand(() -> h_pneumatics.setClawSolenoid(true)));//open

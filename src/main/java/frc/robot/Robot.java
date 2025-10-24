@@ -4,44 +4,28 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private final RobotContainer m_robotContainer;
-
-  
- 
-  
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
- 
-
 
   public Robot() {
     m_robotContainer = new RobotContainer();
   }
+
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandScheduler.getInstance().run();
   }
 
   @Override
   public void disabledInit() {
-    
-
-    RobotContainer.s_Elevator.zeroElevator();
-   }
-
-  
+    // Removed zeroElevator() call
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -52,10 +36,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    RobotContainer.s_Elevator.zeroElevator();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    // Removed zeroElevator() call
   }
 
   @Override
@@ -66,10 +50,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    RobotContainer.s_Elevator.zeroElevator();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    // Removed zeroElevator() call
   }
 
   @Override
@@ -81,9 +65,8 @@ public class Robot extends TimedRobot {
   public void teleopExit() {}
 
   @Override
-   public void testInit() {
-    // Cancels all running commands at the start of test mode.
-   CommandScheduler.getInstance().cancelAll();
+  public void testInit() {
+    CommandScheduler.getInstance().cancelAll();
   }
 
   @Override
