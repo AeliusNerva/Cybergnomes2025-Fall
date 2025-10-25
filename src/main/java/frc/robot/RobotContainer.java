@@ -149,6 +149,15 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    // Add a state variable to track the Algae Intake mode
+    private enum AlgaeIntakeState {
+        OFF,
+        FORWARD,
+        REVERSE
+    }
+
+    private AlgaeIntakeState algaeIntakeState = AlgaeIntakeState.OFF;
+
     public RobotContainer() {
     //    configureAutoBuilder();
     // //configurePathPlannerCommands();
@@ -263,6 +272,33 @@ public class RobotContainer {
           //Co driver
        b_PivotUp_coDriver.onTrue(new PivotCommand(Constants.Claw.PivotSetPosition.UP)); 
        b_PivotOut_coDriver.onTrue(new PivotCommand(Constants.Claw.PivotSetPosition.OUT));
+
+       // Add logic for the POV button (90 degrees) to control Algae Intake
+       new POVButton(driver_hid, 90).onTrue(new InstantCommand(() -> {
+           switch (algaeIntakeState) {
+               case OFF:
+                   // Extend pneumatics and start intake wheels forward
+                   h_pneumatics.setAlgaeIntake1Solenoid(true);
+                   h_pneumatics.setAlgaeIntake2Solenoid(true);
+                   s_AlgaeIntakeWheels.setSpeed(0.5);
+                   algaeIntakeState = AlgaeIntakeState.FORWARD;
+                   break;
+
+               case FORWARD:
+                   // Stop intake wheels
+                   s_AlgaeIntakeWheels.setSpeed(0);
+                   algaeIntakeState = AlgaeIntakeState.REVERSE;
+                   break;
+
+               case REVERSE:
+                   // Retract pneumatics and reverse intake wheels
+                   h_pneumatics.setAlgaeIntake1Solenoid(false);
+                   h_pneumatics.setAlgaeIntake2Solenoid(false);
+                   s_AlgaeIntakeWheels.setSpeed(-0.5);
+                   algaeIntakeState = AlgaeIntakeState.OFF;
+                   break;
+           }
+       }));
 
     }
     private void stopMotors() {
