@@ -40,6 +40,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -148,15 +149,6 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
-    // Add a state variable to track the Algae Intake mode
-    private enum AlgaeIntakeState {
-        OFF,
-        FORWARD,
-        REVERSE
-    }
-
-    private AlgaeIntakeState algaeIntakeState = AlgaeIntakeState.OFF;
 
     public RobotContainer() {
     //    configureAutoBuilder();
@@ -272,34 +264,6 @@ public class RobotContainer {
           //Co driver
        b_PivotUp_coDriver.onTrue(new PivotCommand(Constants.Claw.PivotSetPosition.UP)); 
        b_PivotOut_coDriver.onTrue(new PivotCommand(Constants.Claw.PivotSetPosition.OUT));
-
-       // Add logic for the POV button (90 degrees) to control Algae Intake
-       new POVButton(driver_hid, 90).onTrue(new InstantCommand(() -> {
-           switch (algaeIntakeState) {
-               case OFF:
-                   // Extend pneumatics and start intake wheels forward
-                   h_pneumatics.setAlgaeIntake1Solenoid(true);
-                   h_pneumatics.setAlgaeIntake2Solenoid(true);
-                   s_AlgaeIntakeWheels.setSpeed(0.5);
-                   algaeIntakeState = AlgaeIntakeState.FORWARD;
-                   break;
-
-               case FORWARD:
-                   // Stop intake wheels
-                   s_AlgaeIntakeWheels.setSpeed(0);
-                   algaeIntakeState = AlgaeIntakeState.REVERSE;
-                   break;
-
-               case REVERSE:
-                   // Retract pneumatics and reverse intake wheels
-                   h_pneumatics.setAlgaeIntake1Solenoid(false);
-                   h_pneumatics.setAlgaeIntake2Solenoid(false);
-                   s_AlgaeIntakeWheels.setSpeed(-0.5);
-                   algaeIntakeState = AlgaeIntakeState.OFF;
-                   break;
-           }
-       }));
-
     }
     private void stopMotors() {
         s_Elevator.setSpeed(0);
@@ -315,9 +279,21 @@ public class RobotContainer {
        *
        * @return the command to run in autonomous
        */
-    public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
+     public Command getAutonomousCommand() {
+    // This method loads the auto when it is called, however, it is recommended
+    // to first load your paths/autos when code starts, then return the
+    // pre-loaded auto/path
+    autoChooser = new SendableChooser<>();
+    autoChooser.setDefaultOption("Blue team Blue side", new PathPlannerAuto("Blue team Blue side"));
+    autoChooser.addOption("Blue team middle", new PathPlannerAuto("Blue team middle"));
+    autoChooser.addOption("Blue team red side", new PathPlannerAuto("Blue team red side"));
+    autoChooser.addOption("Red team Blue side", new PathPlannerAuto("red team Blue side"));
+    autoChooser.addOption("Red team Middle", new PathPlannerAuto("red team Middle"));
+    autoChooser.addOption("Red team red side", new PathPlannerAuto("red team red side"));
+
+    SmartDashboard.putData("Auto choices", autoChooser);
+
     return autoChooser.getSelected();
-    //return new PathPlannerAuto("Test Path");
-    }
+  }
 }
+ 
