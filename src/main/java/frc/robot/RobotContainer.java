@@ -9,6 +9,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Algae.IntakeCommand;
 import frc.robot.commands.Algae.IntakeWheelsCommand;
 import frc.robot.commands.Claw.PivotCommand;
+import frc.robot.commands.Elevator.ElevatorLevelCommand;
 
 // import com.pathplanner.lib.auto.AutoBuilder;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -43,6 +44,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -131,6 +133,12 @@ public class RobotContainer {
     private final JoystickButton b_AlgaeIntake1Block_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR1.value);
     private final JoystickButton b_AlgaeIntake2Block_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR1.value);
     private final JoystickButton b_AlgaeIntakeWheels_coDriver = new JoystickButton(coDriver, PS4Controller.Button.kR1.value);
+
+    // Adjust height and descent offsets
+    private final JoystickButton b_AdjustHeightUp = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
+    private final JoystickButton b_AdjustHeightDown = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
+    private final JoystickButton b_AdjustDescentUp = new JoystickButton(coDriver, PS4Controller.Button.kOptions.value);
+    private final JoystickButton b_AdjustDescentDown = new JoystickButton(coDriver, PS4Controller.Button.kTouchpad.value);
    
 
 
@@ -149,6 +157,18 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    // Add a state variable to track the Algae Intake mode
+    private enum AlgaeIntakeState {
+        FORWARD,
+        STOPPED,
+        REVERSE,
+        OFF
+    }
+
+    private AlgaeIntakeState algaeIntakeState = AlgaeIntakeState.OFF;
+
+    private double tagDistanceAdjustment = 12; // Adjustable distance in inches
 
     public RobotContainer() {
     //    configureAutoBuilder();
@@ -208,10 +228,10 @@ public class RobotContainer {
         /* Elevator Buttons */
           //Driver
        // Elevator setpoints
-       b_Level1.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_1_HEIGHT));
-       b_Level2.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_2_HEIGHT));
-       b_Level3.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_3_HEIGHT));
-       b_Level4.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_4_HEIGHT));
+       b_Level1.onTrue(new ElevatorLevelCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_1_HEIGHT));
+       b_Level2.onTrue(new ElevatorLevelCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_2_HEIGHT));
+       b_Level3.onTrue(new ElevatorLevelCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_3_HEIGHT));
+       b_Level4.onTrue(new ElevatorLevelCommand(Constants.Elevator.ElevatorSetPosition.LEVEL_4_HEIGHT));
        b_Zero.onTrue(new ElevatorCommand(Constants.Elevator.ElevatorSetPosition.ZERO_HEIGHT));
 
           //Co driver
@@ -264,6 +284,88 @@ public class RobotContainer {
           //Co driver
        b_PivotUp_coDriver.onTrue(new PivotCommand(Constants.Claw.PivotSetPosition.UP)); 
        b_PivotOut_coDriver.onTrue(new PivotCommand(Constants.Claw.PivotSetPosition.OUT));
+
+        // Add logic for the POV button (90 degrees) to control Algae Intake
+        new POVButton(driver_hid, 90).onTrue(new InstantCommand(() -> {
+            switch (algaeIntakeState) {
+                case OFF:
+                    // Extend pneumatics and start intake wheels forward
+                    h_pneumatics.setAlgaeIntake1Solenoid(true);
+                    h_pneumatics.setAlgaeIntake2Solenoid(true);
+                    s_AlgaeIntakeWheels.setSpeed(-0.75);
+                    algaeIntakeState = AlgaeIntakeState.FORWARD;
+                    break;
+
+                case FORWARD:
+                    // Stop intake wheels
+                    s_AlgaeIntakeWheels.setSpeed(0);
+                    algaeIntakeState = AlgaeIntakeState.STOPPED;
+                    break;
+
+                case STOPPED:
+                    // Retract pneumatics and reverse intake wheels
+                    h_pneumatics.setAlgaeIntake1Solenoid(false);
+                    h_pneumatics.setAlgaeIntake2Solenoid(false);
+                    s_AlgaeIntakeWheels.setSpeed(0.75);
+                    algaeIntakeState = AlgaeIntakeState.REVERSE;
+                    break;
+
+                case REVERSE:
+                    // Stop intake wheels
+                    s_AlgaeIntakeWheels.setSpeed(0);
+                    algaeIntakeState = AlgaeIntakeState.OFF;
+                    break;
+            }
+        }));
+
+        // Add logic for the POV button (180 degrees) to handle AprilTag alignment
+        new POVButton(driver_hid, 180).onTrue(new InstantCommand(() -> {
+            LimelightHelpers.setPipelineIndex("limelight", 1); // Set pipeline to 1
+            double tagID = LimelightHelpers.getFiducialID("limelight");
+
+            final double targetAngle;
+            if (tagID == 18 || tagID == 10) {
+                targetAngle = 0;
+            } else if (tagID == 19 || tagID == 9) {
+                targetAngle = 60;
+            } else if (tagID == 20 || tagID == 8) {
+                targetAngle = 120;
+            } else if (tagID == 10 || tagID == 21) {
+                targetAngle = 180;
+            } else if (tagID == 11 || tagID == 22) {
+                targetAngle = 240;
+            } else if (tagID == 17 || tagID == 16) {
+                targetAngle = 300;
+            } else {
+                return; // Exit if no valid tag is detected
+            }
+
+            // Rotate the robot to the target angle in field-centric mode
+            drivetrain.applyRequest(() -> 
+                point.withModuleDirection(new Rotation2d(Math.toRadians(targetAngle)))
+            ).schedule();
+
+            // Center the tag on the crosshair
+            double tx = LimelightHelpers.getTX("limelight");
+            drivetrain.applyRequest(() -> 
+                drive.withVelocityX(0).withVelocityY(-tx * 0.1) // Adjust Y based on TX
+            ).schedule();
+
+            // Move 12 inches away from the tag
+            drivetrain.applyRequest(() -> 
+                drive.withVelocityX(tagDistanceAdjustment * 0.0254).withVelocityY(0) // Convert inches to meters
+            ).schedule();
+        }));
+
+        // Add bindings to adjust the tag distance
+        b_AdjustHeightUp.onTrue(new InstantCommand(() -> tagDistanceAdjustment += 1));
+        b_AdjustHeightDown.onTrue(new InstantCommand(() -> tagDistanceAdjustment -= 1));
+
+        // Adjust height and descent offsets
+        b_AdjustHeightUp.onTrue(new InstantCommand(() -> ElevatorLevelCommand.adjustHeight(1)));
+        b_AdjustHeightDown.onTrue(new InstantCommand(() -> ElevatorLevelCommand.adjustHeight(-1)));
+        b_AdjustDescentUp.onTrue(new InstantCommand(() -> ElevatorLevelCommand.adjustDescent(1)));
+        b_AdjustDescentDown.onTrue(new InstantCommand(() -> ElevatorLevelCommand.adjustDescent(-1)));
     }
     private void stopMotors() {
         s_Elevator.setSpeed(0);
@@ -296,4 +398,3 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 }
- 
