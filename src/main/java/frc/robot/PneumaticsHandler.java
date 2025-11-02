@@ -19,6 +19,9 @@ public class PneumaticsHandler {
     private final Solenoid s_AlgaeIntake1Block = new Solenoid(PneumaticsModuleType.REVPH, 1);
     private final Solenoid s_AlgaeIntake2Block = new Solenoid(PneumaticsModuleType.REVPH, 2);
 
+    public static final double MIN_PRESSURE = 90.0; // Minimum pressure in PSI
+    
+    public static final double MAX_PRESSURE = 120.0; // Maximum pressure in PSI
 
     public PneumaticsHandler() {
         compressor.enableAnalog(Constants.Pneumatics.MIN_PRESSURE, Constants.Pneumatics.MAX_PRESSURE);
@@ -42,5 +45,11 @@ public class PneumaticsHandler {
     public void setAlgaeIntake2Solenoid(boolean value) {
         s_AlgaeIntake2Block.set(value);
     }
+    public static class Pneumatics {
 
+        public static final double MIN_PRESSURE = 90.0; // Minimum pressure in PSI
+    
+        public static final double MAX_PRESSURE = 120.0; // Maximum pressure in PSI
+    
+    }
     } 

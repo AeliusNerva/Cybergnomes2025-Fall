@@ -15,23 +15,37 @@ public class ElevatorLevelCommand extends SequentialCommandGroup {
 
     public ElevatorLevelCommand(Constants.Elevator.ElevatorSetPosition targetPosition) {
         addCommands(
-            // Move claw pivot to UP position
-            new PivotCommand(Constants.Claw.PivotSetPosition.UP),
             // Activate coral intake and wait 2 seconds
             new InstantCommand(() -> RobotContainer.h_pneumatics.setCoralPusherSolenoid(true)),
             new WaitCommand(2),
+            // Move claw pivot to OUT position
+            new PivotCommand(Constants.Claw.PivotSetPosition.OUT),
+            new WaitCommand(2),
+            // Open the claw
+            new InstantCommand(() -> RobotContainer.h_pneumatics.setClawSolenoid(true)),
+            new WaitCommand(2),
+            // Deactivate coral intake and wait 5 seconds
+            new InstantCommand(() -> RobotContainer.h_pneumatics.setCoralPusherSolenoid(false)),
+            new WaitCommand(5),
             // Close the claw
             new InstantCommand(() -> RobotContainer.h_pneumatics.setClawSolenoid(false)),
-            // Move elevator to the target position with height adjustment
+            new WaitCommand(2),
+             // Move claw pivot to UP position
+             new PivotCommand(Constants.Claw.PivotSetPosition.UP),
+             new WaitCommand(2),
+            // Move elevator to the target position with height adjustment using PID
             new InstantCommand(() -> RobotContainer.s_Elevator.setPosition(targetPosition.position + heightAdjustment)),
-            // Move claw pivot to DOWN position
-            new PivotCommand(Constants.Claw.PivotSetPosition.OUT),
-            // Slowly move elevator down by descent adjustment
+            new WaitCommand(2),
+           
+            // Slowly move elevator down by descent adjustment using PID
             new InstantCommand(() -> RobotContainer.s_Elevator.setPosition(targetPosition.position + heightAdjustment - descentAdjustment)),
-            // Move claw pivot back to UP position
-            new PivotCommand(Constants.Claw.PivotSetPosition.UP),
-            // Move elevator to ZERO position
-            new InstantCommand(() -> RobotContainer.s_Elevator.setPosition(Constants.Elevator.ElevatorSetPosition.ZERO_HEIGHT.position))
+            new WaitCommand(2),
+            // Move claw pivot back to OUT position
+            new PivotCommand(Constants.Claw.PivotSetPosition.OUT),
+            new WaitCommand(2),
+            // Move elevator to ZERO position using PID
+            new InstantCommand(() -> RobotContainer.s_Elevator.setPosition(Constants.Elevator.ElevatorSetPosition.ZERO_HEIGHT.position)),
+            new WaitCommand(2)
         );
     }
 

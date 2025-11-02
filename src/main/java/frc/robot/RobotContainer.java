@@ -119,12 +119,12 @@ public class RobotContainer {
     private final JoystickButton b_ClawCloseBlock = new JoystickButton(driver,PS4Controller.Button.kL2.value); // claw to CLOSE
     private final POVButton b_PivotOut = new POVButton(driver_hid, 270); // PIVOT to angle OUT while coral is CLOSED (pushed into claw)
       //CO DRIVER
-    private final POVButton b_ClawOpenBlock_coDriver = new POVButton(coDriver_hid, 0); // claw to open
+    private final JoystickButton b_ClawOpenBlock_coDriver = new JoystickButton(coDriver_hid,PS4Controller.Button.kL1.value); // claw to open
     private final POVButton b_PivotUp_coDriver = new POVButton(coDriver_hid, 0); // PIVOT to angle up while coral is open (pushed into claw)
-    private final POVButton b_ClawCloseBlock_coDriver = new POVButton(coDriver_hid, 270); // claw to CLOSE
+    private final JoystickButton b_ClawCloseBlock_coDriver = new JoystickButton(coDriver_hid,PS4Controller.Button.kL2.value); // claw to CLOSE
     private final POVButton b_PivotOut_coDriver = new POVButton(coDriver_hid, 270); // PIVOT to angle OUT while coral is CLOSED (pushed into claw)
 
-    //*** ALGAE INTAKE ***/
+    //*** ALGAE INTAKE b_ClawCloseBlock_coDriver***/
         //DRIVER
     private final JoystickButton b_AlgaeIntake1Block = new JoystickButton(driver, PS4Controller.Button.kR1.value);
     private final JoystickButton b_AlgaeIntake2Block = new JoystickButton(driver, PS4Controller.Button.kR1.value);
@@ -142,7 +142,7 @@ public class RobotContainer {
    
 
 
- /* Sendable Chooser and Autonomus Commands */
+ /* Sendable Chooser and Autonomus Commands b_ClawOpenBlock_coDriver*/
  private static SendableChooser<Command> autoChooser;
     
     /* Setting up bindings for necessary control of the swerve drive platform */
